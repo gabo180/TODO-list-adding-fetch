@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { RiCloseCircleLine } from "react-icons/ri";
 
 const TodoList = () => {
-	const [todos, setTodos] = useState(["Gabriel", "Samuel", "Daniel"]);
+	const [todos, setTodos] = useState([]);
 	const [inputValue, setInputValue] = useState("");
 
 	const list = todos.map((item, index) => {
@@ -12,15 +12,21 @@ const TodoList = () => {
 				{item}{" "}
 				<div className="icons">
 					{" "}
-					<RiCloseCircleLine />{" "}
+					<RiCloseCircleLine onClick={() => removeTodo(index)} />{" "}
 				</div>
 			</li>
 		);
 	});
 
+	const removeTodo = index => {
+		const newArray = todos.filter((item, i) => i != index);
+		setTodos(newArray);
+	};
+
 	const addTodo = e => {
 		e.preventDefault();
-		const newTodoList = [...todos, inputValue];
+		const userInput = inputValue.trim();
+		const newTodoList = [...todos, userInput];
 		setTodos(newTodoList);
 		setInputValue("");
 	};
