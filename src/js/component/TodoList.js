@@ -50,24 +50,6 @@ const TodoList = () => {
 		setInputValue("");
 	};
 
-	// const todoLeft = todos => {
-	// 	if (todos.length === 0) {
-	// 		("Nothing to do.");
-	// 	} else if (todos.length === 1) {
-	// 		{
-	// 			{
-	// 				todos.length;
-	// 			}
-	// 			+"Item left";
-	// 		}
-	// 	} else todos.length > 1;
-	// 	{
-	// 		todos.length;
-	// 	}
-	// 	("Items left");
-	// 	console.log(todos);
-	// };
-
 	return (
 		<>
 			<div className="todoDiv">
