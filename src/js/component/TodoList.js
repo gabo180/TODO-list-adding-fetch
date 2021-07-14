@@ -1,20 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { RiCloseCircleLine } from "react-icons/ri";
 
 const TodoList = () => {
 	const [todos, setTodos] = useState([]);
 	const [inputValue, setInputValue] = useState("");
+	const [footer, setFooter] = useState("");
+
+	const inputRef = useRef(null);
+
+	useEffect(() => {
+		inputRef.current.focus();
+	});
+
+	useEffect(() => {
+		if (todos.length === 0) {
+			setFooter("Items added, add something todo.");
+		} else if (todos.length === 1) {
+			setFooter("Item Left!");
+		} else {
+			setFooter("Items Left!");
+		}
+	}, [todos.length]);
 
 	const list = todos.map((item, index) => {
 		return (
-			<li key={index}>
-				{item}{" "}
-				<div className="icons">
+			<div key={index} className="todo">
+				<div className="item" key={index}>
+					{item}{" "}
+				</div>
+				<div className="remove=icon">
 					{" "}
 					<RiCloseCircleLine onClick={() => removeTodo(index)} />{" "}
 				</div>
-			</li>
+			</div>
 		);
 	});
 
@@ -31,10 +50,28 @@ const TodoList = () => {
 		setInputValue("");
 	};
 
+	// const todoLeft = todos => {
+	// 	if (todos.length === 0) {
+	// 		("Nothing to do.");
+	// 	} else if (todos.length === 1) {
+	// 		{
+	// 			{
+	// 				todos.length;
+	// 			}
+	// 			+"Item left";
+	// 		}
+	// 	} else todos.length > 1;
+	// 	{
+	// 		todos.length;
+	// 	}
+	// 	("Items left");
+	// 	console.log(todos);
+	// };
+
 	return (
 		<>
-			<div>
-				<form onSubmit={e => addTodo(e)}>
+			<div className="todoDiv">
+				<form onSubmit={e => addTodo(e)} className="todoForm">
 					<input
 						placeholder="What needs to be done?"
 						type="text"
@@ -42,11 +79,16 @@ const TodoList = () => {
 						name="inputName"
 						onChange={e => setInputValue(e.target.value)}
 						value={inputValue}
+						ref={inputRef}
 					/>{" "}
 					<button type="submit" id="addButton">
 						Add
 					</button>
-					<ul>{list}</ul>
+					{list}
+					<hr />
+					<div className="footer">
+						{todos.length} {footer}
+					</div>
 				</form>
 			</div>
 		</>
