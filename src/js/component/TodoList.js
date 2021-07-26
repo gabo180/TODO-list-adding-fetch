@@ -7,6 +7,17 @@ const TodoList = () => {
 	const [inputValue, setInputValue] = useState("");
 	const [footer, setFooter] = useState("");
 
+	const fetchTodo = () => {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/gabrielh")
+			.then(response => response.json())
+			.then(todos => console.log(todos))
+			.catch(error => console.log(error));
+	};
+
+	useEffect(() => {
+		fetchTodo();
+	}, []);
+
 	const inputRef = useRef(null);
 
 	useEffect(() => {
