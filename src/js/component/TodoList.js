@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { RiCloseCircleLine } from "react-icons/ri";
+import { FaTrash } from "react-icons/fa";
 
 const TodoList = () => {
 	const [todos, setTodos] = useState([]);
 	const [inputValue, setInputValue] = useState("");
 	const [footer, setFooter] = useState("");
+	const [showBtn, setShowBtn] = useState({ state: false, index: 0 });
 
-	const fetchTodo = () => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/gabrielh")
-			.then(response => response.json())
-			.then(todos => console.log(todos))
-			.catch(error => console.log(error));
-	};
+	// const fetchTodo = () => {
+	// 	fetch("https://assets.breatheco.de/apis/fake/todos/user/gabrielh")
+	// 		.then(response => response.json())
+	// 		.then(todos => console.log(todos))
+	// 		.catch(error => console.log(error));
+	// };
 
-	useEffect(() => {
-		fetchTodo();
-	}, []);
+	// useEffect(() => {
+	// 	fetchTodo();
+	// }, []);
 
 	const inputRef = useRef(null);
 
@@ -26,7 +28,7 @@ const TodoList = () => {
 
 	useEffect(() => {
 		if (todos.length === 0) {
-			setFooter("Items added, add something todo.");
+			setFooter("Items added, add something to do.");
 		} else if (todos.length === 1) {
 			setFooter("Item Left!");
 		} else {
@@ -34,17 +36,26 @@ const TodoList = () => {
 		}
 	}, [todos.length]);
 
-	const list = todos.map((item, index) => {
+	const list = todos.map((item, i) => {
+		const style = { color: "purple", fontSize: "1.5em" };
 		return (
-			<div key={index} className="todo">
-				<div className="item" key={index}>
-					{item}{" "}
+			<>
+				<hr />{" "}
+				<div
+					key={i}
+					className="todo"
+					onMouseEnter={() => setShowBtn({ state: true, index: i })}
+					onMouseLeave={() => setShowBtn({ state: false, index: 0 })}>
+					<span className="item" key={i}>
+						{item}{" "}
+					</span>
+					{showBtn.state == true && showBtn.index == i ? (
+						<FaTrash style={style} onClick={() => removeTodo(i)} />
+					) : (
+						""
+					)}
 				</div>
-				<div className="remove=icon">
-					{" "}
-					<RiCloseCircleLine onClick={() => removeTodo(index)} />{" "}
-				</div>
-			</div>
+			</>
 		);
 	});
 
@@ -62,7 +73,8 @@ const TodoList = () => {
 	};
 
 	return (
-		<>
+		<div className="mainDiv">
+			<h1>The TODO List</h1>
 			<div className="todoDiv">
 				<form onSubmit={e => addTodo(e)} className="todoForm">
 					<input
@@ -84,7 +96,7 @@ const TodoList = () => {
 					</div>
 				</form>
 			</div>
-		</>
+		</div>
 	);
 };
 
