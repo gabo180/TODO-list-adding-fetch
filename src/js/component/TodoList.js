@@ -116,9 +116,7 @@ const TodoList = () => {
 					className="todo"
 					onMouseEnter={() => setShowBtn({ state: true, index: i })}
 					onMouseLeave={() => setShowBtn({ state: false, index: 0 })}>
-					<span className={`${item.done && "doneTask"}`}>
-						{item.label}{" "}
-					</span>
+					<span className="item">{item.label} </span>
 					{showBtn.state == true && showBtn.index == i ? (
 						<FaTrash style={style} onClick={() => removeTodo(i)} />
 					) : (
@@ -137,7 +135,7 @@ const TodoList = () => {
 	const addTodo = e => {
 		e.preventDefault();
 		let userInput = inputValue.trim();
-		userInput = { label: e.target.value, done: false };
+		userInput = { label: inputValue, done: false };
 		const newTodoList = [...todos, userInput];
 		setTodos(newTodoList);
 		console.log("THIS IS THE NEW TODO LIST: ", newTodoList);
