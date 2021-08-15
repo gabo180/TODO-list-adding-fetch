@@ -20,33 +20,6 @@ const TodoList = () => {
 		updateTodo();
 	}, [todos]);
 
-	// /* NEW SET OF FUNCTIONS USING ASYNC */
-	// const initList = async () => {
-	// 	const response = await fetch(apiURL);
-	// 	try {
-	// 		const data = await response.json();
-	// 		setTodos(data);
-	// 	} catch (error) {
-	// 		throw new Error(error);
-	// 	}
-	// };
-
-	// const updateList = async () => {
-	// 	const response = await fetch(apiURL, {
-	// 		method: "PUT", // or 'POST'
-	// 		body: JSON.stringify(todos), // data can be `string` or {object}!
-	// 		headers: {
-	// 			"Content-Type": "application/json"
-	// 		}
-	// 	});
-	// 	try {
-	// 		const data = await response.json();
-	// 		console.log("Success:", JSON.stringify(data));
-	// 	} catch (error) {
-	// 		throw new Error(error);
-	// 	}
-	// };
-
 	const fetchTodo = () => {
 		fetch(apiURL)
 			.then(response => {
@@ -56,7 +29,6 @@ const TodoList = () => {
 					alert(
 						`Something went wrong, this is the error ${response.status}`
 					);
-					// throw Error(`${resp.ok} ${resp.status}`);
 				}
 			})
 			.then(data => {
