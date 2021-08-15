@@ -9,16 +9,86 @@ const TodoList = () => {
 	const [footer, setFooter] = useState("");
 	const [showBtn, setShowBtn] = useState({ state: false, index: 0 });
 
-	// const fetchTodo = () => {
-	// 	fetch("https://assets.breatheco.de/apis/fake/todos/user/gabrielh")
-	// 		.then(response => response.json())
-	// 		.then(todos => console.log(todos))
-	// 		.catch(error => console.log(error));
+	//URL as a Variable
+	const apiURL = "https://assets.breatheco.de/apis/fake/todos/user/gabrielh";
+
+	useEffect(() => {
+		fetchTodo();
+	}, []);
+
+	useEffect(() => {
+		updateTodo();
+	}, [todos]);
+
+	// /* NEW SET OF FUNCTIONS USING ASYNC */
+	// const initList = async () => {
+	// 	const response = await fetch(apiURL);
+	// 	try {
+	// 		const data = await response.json();
+	// 		setTodos(data);
+	// 	} catch (error) {
+	// 		throw new Error(error);
+	// 	}
 	// };
 
-	// useEffect(() => {
-	// 	fetchTodo();
-	// }, []);
+	// const updateList = async () => {
+	// 	const response = await fetch(apiURL, {
+	// 		method: "PUT", // or 'POST'
+	// 		body: JSON.stringify(todos), // data can be `string` or {object}!
+	// 		headers: {
+	// 			"Content-Type": "application/json"
+	// 		}
+	// 	});
+	// 	try {
+	// 		const data = await response.json();
+	// 		console.log("Success:", JSON.stringify(data));
+	// 	} catch (error) {
+	// 		throw new Error(error);
+	// 	}
+	// };
+
+	const fetchTodo = () => {
+		fetch(apiURL)
+			.then(response => {
+				if (response.status >= 200 && response.status < 300) {
+					return response.json();
+				} else {
+					alert(
+						`Something went wrong, this is the error ${response.status}`
+					);
+					// throw Error(`${resp.ok} ${resp.status}`);
+				}
+			})
+			.then(data => {
+				console.log(data);
+				setTodos(data);
+			})
+			.catch(error => console.log("This is an error: ", error));
+	};
+
+	const updateTodo = () => {
+		fetch(apiURL, {
+			method: "PUT",
+			body: JSON.stringify(todos),
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+			.then(resp => {
+				console.log(resp.ok); // will be true if the response is successfull
+				console.log(resp.status); // the status code = 200 or code = 400 etc.
+				console.log(resp.text()); // will try return the exact result as string
+				return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then(data => {
+				//here is were your code should start after the fetch finishes
+				console.log(data); //this will print on the console the exact object received from the server
+			})
+			.catch(error => {
+				//error handling
+				console.log(error);
+			});
+	};
 
 	const inputRef = useRef(null);
 
@@ -46,8 +116,8 @@ const TodoList = () => {
 					className="todo"
 					onMouseEnter={() => setShowBtn({ state: true, index: i })}
 					onMouseLeave={() => setShowBtn({ state: false, index: 0 })}>
-					<span className="item" key={i}>
-						{item}{" "}
+					<span className={`${item.done && "doneTask"}`}>
+						{item.label}{" "}
 					</span>
 					{showBtn.state == true && showBtn.index == i ? (
 						<FaTrash style={style} onClick={() => removeTodo(i)} />
@@ -66,9 +136,11 @@ const TodoList = () => {
 
 	const addTodo = e => {
 		e.preventDefault();
-		const userInput = inputValue.trim();
+		let userInput = inputValue.trim();
+		userInput = { label: e.target.value, done: false };
 		const newTodoList = [...todos, userInput];
 		setTodos(newTodoList);
+		console.log("THIS IS THE NEW TODO LIST: ", newTodoList);
 		setInputValue("");
 	};
 
