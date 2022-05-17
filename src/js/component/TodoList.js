@@ -10,7 +10,7 @@ const TodoList = () => {
 	const [showBtn, setShowBtn] = useState({ state: false, index: 0 });
 
 	//URL as a Variable
-	const apiURL = "https://assets.breatheco.de/apis/fake/todos/user/gabrielh";
+	const apiURL = "https://assets.breatheco.de/apis/fake/todos/user/gabo180";
 
 	useEffect(() => {
 		fetchTodo();
@@ -58,7 +58,7 @@ const TodoList = () => {
 			})
 			.catch(error => {
 				//error handling
-				console.log(error);
+				console.log("This is an error: ", error);
 			});
 	};
 
